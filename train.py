@@ -305,7 +305,7 @@ def train(hyp, opt, device, tb_writer=None):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--weights', type=str, default='', help='initial weights path')
-    parser.add_argument('--cfg', type=str, default='cfg/test-se.cfg', help='model.cfg path')
+    parser.add_argument('--cfg', type=str, default='cfg/test-cau.cfg', help='model.cfg path')
     parser.add_argument('--t_cfg', type=str, default='', help='teacher model cfg file path for knowledge distillation')
     parser.add_argument('--t_weights', type=str, default='', help='teacher model weights')
     parser.add_argument('--data', type=str, default='data/data.yaml', help='data.yaml path')
