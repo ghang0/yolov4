@@ -77,6 +77,8 @@ def test(data,
     p, r, f1, mp, mr, map50, map, t0, t1 = 0., 0., 0., 0., 0., 0., 0., 0., 0.
     loss = torch.zeros(3, device=device)
     jdict, stats, ap, ap_class = [], [], [], []
+    tot_iou = 0.0
+    tot_num = 0
     for batch_i, (img, targets, paths, shapes) in enumerate(tqdm(dataloader, desc=s)):
         img = img.to(device, non_blocking=True)
         img = img.half() if half else img.float()  # uint8 to fp16/32
@@ -135,7 +137,9 @@ def test(data,
                     if pi.shape[0]:
                         # Prediction to target ious
                         ious, i = box_iou(pred[pi, :4], tbox[ti]).max(1)  # best ious, indices
-
+                        for k in (ious > nms_thres).nonzero(as_tuple=False):
+                            tot_iou += ious[k]
+                            tot_num +=1
                         # Append detections
                         for j in (ious > iouv[0]).nonzero(as_tuple=False):
                             d = ti[i[j]]  # detected target
@@ -168,7 +172,7 @@ def test(data,
     # Print results
     pf = '%20s' + '%12.4g' * 6  # print format
     print(pf % ('all', seen, nt.sum(), mp, mr, map50, map))
-
+    print('Avg_Iou = {0:.4f}'.format((tot_iou.cpu()/  tot_num)[0]))
     # Print results per class
     if verbose and nc > 1 and len(stats):
         for i, c in enumerate(ap_class):
