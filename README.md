@@ -12,6 +12,3 @@ python3 train.py --data data/obj.data  --cfg cfg/test-cau.cfg
 
 # Data
 If you want high beam data set, please leave a message
-
-# System
-High beam capture system 链接：链接：https://pan.baidu.com/s/1c1Qvy6b665N6gcL5hGubkg  提取码：vel0 
